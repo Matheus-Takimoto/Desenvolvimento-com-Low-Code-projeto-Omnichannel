@@ -8,15 +8,57 @@ import { MessageSquare, Phone, Mail, Instagram, Facebook, Send } from "lucide-re
 import { useToast } from "@/hooks/use-toast";
 
 const channels = [
-  { id: 'whatsapp', name: 'WhatsApp', icon: MessageSquare, color: 'bg-green-500' },
-  { id: 'phone', name: 'Telefone', icon: Phone, color: 'bg-blue-500' },
-  { id: 'email', name: 'E-mail', icon: Mail, color: 'bg-red-500' },
-  { id: 'instagram', name: 'Instagram', icon: Instagram, color: 'bg-pink-500' },
-  { id: 'facebook', name: 'Facebook', icon: Facebook, color: 'bg-blue-600' }
+  { 
+    id: 'online', 
+    name: 'Atendimento Online', 
+    icon: MessageSquare, 
+    color: 'bg-primary', 
+    online: true 
+  },
+  { 
+    id: 'whatsapp', 
+    name: 'WhatsApp', 
+    icon: MessageSquare, 
+    color: 'bg-green-500', 
+    contact: '(11) 99999-9999',
+    online: false 
+  },
+  { 
+    id: 'phone', 
+    name: 'Telefone', 
+    icon: Phone, 
+    color: 'bg-blue-500', 
+    contact: '(11) 3456-7890',
+    online: false 
+  },
+  { 
+    id: 'email', 
+    name: 'E-mail', 
+    icon: Mail, 
+    color: 'bg-red-500', 
+    contact: 'atendimento@clinicamediacare.com.br',
+    online: false 
+  },
+  { 
+    id: 'instagram', 
+    name: 'Instagram', 
+    icon: Instagram, 
+    color: 'bg-pink-500', 
+    contact: '@clinicamediacare',
+    online: false 
+  },
+  { 
+    id: 'facebook', 
+    name: 'Facebook', 
+    icon: Facebook, 
+    color: 'bg-blue-600', 
+    contact: 'Clínica MediaCare',
+    online: false 
+  }
 ];
 
 export const PatientInterface = () => {
-  const [selectedChannel, setSelectedChannel] = useState('whatsapp');
+  const [selectedChannel, setSelectedChannel] = useState('online');
   const [patientName, setPatientName] = useState('');
   const [patientContact, setPatientContact] = useState('');
   const [message, setMessage] = useState('');
@@ -98,63 +140,99 @@ export const PatientInterface = () => {
             </CardContent>
           </Card>
 
-          {/* Contact Form */}
+          {/* Contact Form or Contact Info */}
           <Card className="card-glass">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <SelectedIcon className="w-5 h-5 text-primary" />
-                Enviar Mensagem via {selectedChannelData?.name}
+                {selectedChannelData?.online ? 'Atendimento Online' : `Contato via ${selectedChannelData?.name}`}
               </CardTitle>
               <CardDescription>
-                Preencha seus dados e descreva como podemos ajudar
+                {selectedChannelData?.online 
+                  ? 'Preencha seus dados e descreva como podemos ajudar'
+                  : 'Use as informações abaixo para entrar em contato'
+                }
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                  <label className="text-sm font-medium text-foreground mb-2 block">
-                    Nome Completo
-                  </label>
-                  <Input
-                    placeholder="Digite seu nome completo"
-                    value={patientName}
-                    onChange={(e) => setPatientName(e.target.value)}
-                  />
-                </div>
+              {selectedChannelData?.online ? (
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div>
+                    <label className="text-sm font-medium text-foreground mb-2 block">
+                      Nome Completo
+                    </label>
+                    <Input
+                      placeholder="Digite seu nome completo"
+                      value={patientName}
+                      onChange={(e) => setPatientName(e.target.value)}
+                    />
+                  </div>
 
-                <div>
-                  <label className="text-sm font-medium text-foreground mb-2 block">
-                    {selectedChannel === 'email' ? 'E-mail' : 
-                     selectedChannel === 'phone' ? 'Telefone' : 
-                     'WhatsApp / Telefone'}
-                  </label>
-                  <Input
-                    placeholder={
-                      selectedChannel === 'email' ? 'seu@email.com' : 
-                      '(11) 99999-9999'
-                    }
-                    value={patientContact}
-                    onChange={(e) => setPatientContact(e.target.value)}
-                  />
-                </div>
+                  <div>
+                    <label className="text-sm font-medium text-foreground mb-2 block">
+                      E-mail
+                    </label>
+                    <Input
+                      placeholder="seu@email.com"
+                      type="email"
+                      value={patientContact}
+                      onChange={(e) => setPatientContact(e.target.value)}
+                    />
+                  </div>
 
-                <div>
-                  <label className="text-sm font-medium text-foreground mb-2 block">
-                    Mensagem
-                  </label>
-                  <Textarea
-                    placeholder="Descreva como podemos ajudar você (agendamento, dúvidas, resultados de exames, etc.)"
-                    className="min-h-[120px]"
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                  />
-                </div>
+                  <div>
+                    <label className="text-sm font-medium text-foreground mb-2 block">
+                      Mensagem
+                    </label>
+                    <Textarea
+                      placeholder="Descreva como podemos ajudar você (agendamento, dúvidas, resultados de exames, etc.)"
+                      className="min-h-[120px]"
+                      value={message}
+                      onChange={(e) => setMessage(e.target.value)}
+                    />
+                  </div>
 
-                <Button type="submit" className="w-full gap-2">
-                  <Send className="w-4 h-4" />
-                  Enviar Mensagem
-                </Button>
-              </form>
+                  <Button type="submit" className="w-full gap-2">
+                    <Send className="w-4 h-4" />
+                    Iniciar Conversa Online
+                  </Button>
+                </form>
+              ) : (
+                <div className="space-y-6">
+                  <div className="text-center">
+                    <div className={`inline-flex p-4 rounded-full ${selectedChannelData?.color} text-white mb-4`}>
+                      <SelectedIcon className="w-8 h-8" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-foreground mb-2">
+                      Entre em contato via {selectedChannelData?.name}
+                    </h3>
+                    <div className="bg-muted/50 p-4 rounded-lg">
+                      <p className="text-2xl font-bold text-foreground">
+                        {selectedChannelData?.contact}
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="text-sm text-muted-foreground text-center space-y-2">
+                    <p>Horário de atendimento:</p>
+                    <p className="font-medium">Segunda a Sexta: 8h às 18h</p>
+                    <p className="font-medium">Sábado: 8h às 12h</p>
+                  </div>
+
+                  <div className="bg-accent/20 p-4 rounded-lg">
+                    <p className="text-sm text-foreground">
+                      💡 <strong>Dica:</strong> Para atendimento imediato, use nosso 
+                      <Button 
+                        variant="link" 
+                        className="p-0 h-auto font-semibold text-primary"
+                        onClick={() => setSelectedChannel('online')}
+                      >
+                        {" "}Atendimento Online
+                      </Button>
+                    </p>
+                  </div>
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>
