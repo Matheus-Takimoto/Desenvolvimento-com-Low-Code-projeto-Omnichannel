@@ -1,7 +1,7 @@
 Desenvolvimento-com-Low-Code-projeto-Omnichannel <br />
 DESENVOLVIMENTO DE APLICAÇÃO OMNICHANNEL EM PLATAFORMA LOW CODE: MEDIAMNI-CARE <br />
 
-Aplicação Mediamni-Care utilizando a plataforma low code Lovable. O projeto foi criado como atividade prática da disciplina de Desenvolvimento com Low Code. <br />
+Aplicação Mediamni-Care utilizando a plataforma low code Lovable.<br /> O projeto foi criado como atividade prática da disciplina de Desenvolvimento com Low Code. <br />
 Relatorio e resumo inclusos no repositorio para avaliação  <br />
 
 teste a aplicação: <br />
